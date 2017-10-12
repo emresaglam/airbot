@@ -21,8 +21,11 @@ def get_air_quality(zipcode):
 def api_root():
 	return 'Oh hai!'
 
-@app.route('/aqi/<zipcode>')
-def aqi(zipcode):
+@app.route('/aqi/', methods=["POST"])
+def aqi():
+	data = request.form
+	zipcode = data["item"]["message"]
+	zipcode = zipcode[4:]
 	message = get_air_quality(zipcode)
 	returned = {}
 	returned["color"] = "green"
