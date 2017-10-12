@@ -1,4 +1,5 @@
 from flask import Flask, url_for, request
+from werkzeug.datastructures import ImmutableMultiDict
 import geocoder
 import requests
 import json
@@ -24,7 +25,11 @@ def api_root():
 @app.route('/aqi/', methods=["POST"])
 def aqi():
 	data = request.form
-	zipcode = data["item"]["message"]
+	datadict = list(data)
+	print datadict[0]
+	received_message = json.loads(datadict[0])
+	zipcode = received_message["item"]["message"]
+	print zipcode
 	zipcode = zipcode[4:]
 	message = get_air_quality(zipcode)
 	returned = {}
