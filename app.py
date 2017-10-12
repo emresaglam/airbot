@@ -24,11 +24,9 @@ def api_root():
 
 @app.route('/aqi/', methods=["POST"])
 def aqi():
-	data = request.form
-	datadict = list(data)
-	print datadict[0]
-	received_message = json.loads(datadict[0])
-	zipcode = received_message["item"]["message"]
+	data = request.get_json(silent=True)
+	print data
+	zipcode = data["item"]["message"]
 	print zipcode
 	zipcode = zipcode[4:]
 	message = get_air_quality(zipcode)
