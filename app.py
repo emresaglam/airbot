@@ -19,7 +19,7 @@ def get_air_quality(zipcode):
 
 @app.route("/")
 def api_root():
-    return 'Oh hai!'
+	return 'Oh hai!'
 
 @app.route('/aqi/<zipcode>')
 def aqi(zipcode):
