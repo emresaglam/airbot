@@ -24,7 +24,7 @@ def api_root():
 
 @app.route('/aqi/', methods=["POST"])
 def aqi():
-	data = request.get_json(silent=True)
+	data = request.get_json(force=True,silent=False)
 	print data
 	zipcode = data["item"]["message"]
 	print zipcode
