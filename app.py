@@ -26,7 +26,7 @@ def api_root():
 def aqi():
 	data = request.get_json(force=True,silent=False)
 	print data
-	zipcode = data["message"]
+	zipcode = data["item"]["message"]["message"]
 	print zipcode
 	zipcode = zipcode[4:]
 	message = get_air_quality(zipcode)
