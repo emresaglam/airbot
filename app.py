@@ -15,12 +15,16 @@ def get_air_quality(zipcode):
     token = os.environ["BR_TOKEN"]
     url = "https://api.breezometer.com/baqi/?lat={}&lon={}&fields=country_aqi,breezometer_description,country_name&key={}".format(
         lat, lon, token)
-    r = requests.get(url)
-    air_quality["location"] = "{}, {}".format(g.json["city"], g.json["state"])
-    air_quality["raw"] = r.json()
-    message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
-                                                            r.json()["breezometer_description"])
-    air_quality["message"] = message
+    try:
+        r = requests.get(url)
+        air_quality["location"] = "{}, {}".format(g.json["city"], g.json["state"])
+        air_quality["raw"] = r.json()
+        message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
+                                                                r.json()["breezometer_description"])
+        air_quality["message"] = message
+    except requests.exceptions.RequestException as e:
+        air_quality["message"] = "{}".format(e)
+
     return air_quality
 
 
