@@ -28,6 +28,7 @@ def get_air_quality(zipcode):
 def api_root():
     return "Oh hai! This is an API endpoint and this is not the URL you're looking for :)"
 
+@app.route('/aqi/', methods=["POST"])
 @app.route('/aqi/<zipcode>', methods=["GET", "POST"])
 def aqi(zipcode):
     color = "yellow"
