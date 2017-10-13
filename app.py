@@ -10,7 +10,6 @@ app = Flask(__name__)
 def get_air_quality(zipcode):
     air_quality = {}
     g = geocoder.google(zipcode)
-    print g.json["city"], g.json["state"]
     lat = g.json["lat"]
     lon = g.json["lng"]
     token = os.environ["BR_TOKEN"]
@@ -36,13 +35,10 @@ def aqi(zipcode):
     color = "yellow"
     if request.method == "POST":
         data = request.get_json(force=True, silent=False)
-        print data
         zipcode = data["item"]["message"]["message"]
-        print zipcode
         zipcode = zipcode[4:]
 
     message = get_air_quality(zipcode)
-    print message
     aqi = message["raw"]["country_aqi"]
 
     if aqi < 50:
@@ -60,7 +56,6 @@ def aqi(zipcode):
     returned["notify"] = False
     returned["message_format"] = "text"
     returned_json = json.dumps(returned)
-    print returned_json
     return returned_json
 
 
