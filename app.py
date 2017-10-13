@@ -19,7 +19,8 @@ def get_air_quality(zipcode):
     r = requests.get(url)
     air_quality["location"] = "{}, {}".format(g.json["city"], g.json["state"])
     air_quality["raw"] = r.json()
-    message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"], r.json()["breezometer_description"])
+    message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
+                                                            r.json()["breezometer_description"])
     air_quality["message"] = message
     return air_quality
 
@@ -28,7 +29,8 @@ def get_air_quality(zipcode):
 def api_root():
     return "Oh hai! This is an API endpoint and this is not the URL you're looking for :)"
 
-@app.route('/aqi/', methods=["POST"])
+
+@app.route('/aqi/', methods=["POST"], defaults={'zipcode': "00000"})
 @app.route('/aqi/<zipcode>', methods=["GET", "POST"])
 def aqi(zipcode):
     color = "yellow"
@@ -60,6 +62,7 @@ def aqi(zipcode):
     returned_json = json.dumps(returned)
     print returned_json
     return returned_json
+
 
 if __name__ == '__main__':
     app.run()
