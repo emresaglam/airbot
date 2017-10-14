@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request
+from flask import Flask, request
 import geocoder
 import requests
 import json
@@ -8,6 +8,12 @@ app = Flask(__name__)
 
 
 def get_air_quality(zipcode):
+    '''
+    Get the location data (as zipcode or free form). Use geocoder to lookup from google
+    convert it to lat/lon and feed it to Breezometer API to get the AQI and some more data.
+    :param zipcode: 
+    :return: 
+    '''
     token = os.environ["BR_TOKEN"]
     air_quality = {}
     g = geocoder.google(zipcode)
@@ -38,7 +44,14 @@ def api_root():
 
 @app.route('/aqi/', methods=["POST"])
 def aqi():
-    aqiroom = "Air Quality Room" # This might be a ENV variable in the future
+    '''
+    The payload for the POST request must follow the HipChat 
+    room_message webhook format: https://www.hipchat.com/docs/apiv2/webhooks#room_message
+    
+    It returns a basic HipChat message with different colors depending on the air quality
+    :return: 
+    '''
+    aqiroom = os.environ["ROOM_NAME"]
     color = "yellow"
     returned = {}
     message = {}
@@ -74,6 +87,29 @@ def aqi():
     returned_json = json.dumps(returned)
     return returned_json
 
+
+@app.route("/aqig/<zipcode>", methods=["GET"])
+def aqig(zipcode):
+    '''
+    Creates a GET api endpoint where we can query this feeding the parameter at the end of the URL
+    Example: http://127.0.0.1:8000/aqig/Istanbul
+    :param zipcode: 
+    :return: 
+    '''
+    returned = {}
+    message = get_air_quality(zipcode)
+    if message["query_status"] == "OK":
+        aqi = message["raw"]["country_aqi"]
+        color = "green"
+    else:
+        message["message"] = "This location is not recognized"
+        color = "red"
+    returned["color"] = color
+    returned["message"] = message["message"]
+    returned["notify"] = False
+    returned["message_format"] = "text"
+    returned_json = json.dumps(returned)
+    return returned_json
 
 if __name__ == '__main__':
     app.run()
