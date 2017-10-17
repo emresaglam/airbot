@@ -92,7 +92,7 @@ def aqi():
 def slackpost():
     token = request.form.get('token', None)
     command = request.form.get('command', None)
-    text = request.form.get('text', None)
+    zipcode = request.form.get('text', None)
     returned = {}
     message = get_air_quality(zipcode)
     if message["query_status"] == "OK":
