@@ -93,8 +93,16 @@ def slackpost():
     token = request.form.get('token', None)
     command = request.form.get('command', None)
     text = request.form.get('text', None)
-    print token, command, text
-    return "<b>Yes</b>"
+    returned = {}
+    message = get_air_quality(zipcode)
+    if message["query_status"] == "OK":
+        aqi = message["raw"]["country_aqi"]
+        color = "green"
+    else:
+        message["message"] = "This location is not recognized"
+        color = "red"
+
+    return message["message"]
 
 
 @app.route("/aqig/<zipcode>", methods=["GET"])
