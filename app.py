@@ -55,7 +55,9 @@ def aqi():
     color = "yellow"
     returned = {}
     message = {}
-    print "request.form: {}".format(request.data)
+    # print "request.form: {}".format(request.data)
+    # For the line below we can always fo json.loads(request.data)
+    # data = json.loads(request.data) Maybe for the future?
     data = request.get_json(force=True, silent=False)
     print data
     if data["item"]["room"]["name"] != aqiroom:
