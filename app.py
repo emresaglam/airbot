@@ -88,6 +88,15 @@ def aqi():
     return returned_json
 
 
+@app.route("/aqi-slack", methods=['POST'])
+def slackpost():
+    token = request.form.get('token', None)
+    command = request.form.get('command', None)
+    text = request.form.get('text', None)
+    print token, command, text
+    return "<b>Yes</b>"
+
+
 @app.route("/aqig/<zipcode>", methods=["GET"])
 def aqig(zipcode):
     '''
