@@ -1,5 +1,5 @@
 # What is airbot?
-Airbot is a small API endpoint (with one endpoint at the time of writing) that will accept a geolocation and will return the air quality index of that location.
+Airbot is a small API endpoint (with three endpoints at the time of writing) that will accept a geolocation and will return the air quality index of that location.
 
 It's written in few hours work after the Northern California wildfires smoke hit San Francisco and the bay area in October 2017. 
 
@@ -21,3 +21,5 @@ It's designed to be easily deployed on Heroku. You have to define:
 # Todo
 
 - There is some error handling at this point. It does not fail very gracefully. 
+- If no ROOM_NAME is defined, should stop whitelisting.
+- Should accept multiple room names (Maybe a comma separated ROOM_NAME variable?)
