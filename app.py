@@ -16,7 +16,7 @@ def get_air_quality(zipcode):
     '''
     token = os.environ["BR_TOKEN"]
     air_quality = {}
-    g = geocoder.google(zipcode)
+    g = geocoder.arcgis(zipcode)
     if g.status == "OK":
         lat = g.json.get("lat")
         lon = g.json.get("lng")
