@@ -55,6 +55,7 @@ def aqi():
     color = "yellow"
     returned = {}
     message = {}
+    print "request.form: {}".format(request.form)
     data = request.get_json(force=True, silent=False)
     print data
     if data["item"]["room"]["name"] != aqiroom:
@@ -90,6 +91,10 @@ def aqi():
 
 @app.route("/aqi-slack", methods=['POST'])
 def slackpost():
+    '''
+    Creates a slack slash command endpoint. No token needed.
+    :return:
+    '''
     token = request.form.get('token', None)
     command = request.form.get('command', None)
     zipcode = request.form.get('text', None)
