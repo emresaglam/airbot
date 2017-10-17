@@ -23,3 +23,4 @@ It's designed to be easily deployed on Heroku. You have to define:
 - There is some error handling at this point. It does not fail very gracefully. 
 - If no ROOM_NAME is defined, should stop whitelisting.
 - Should accept multiple room names (Maybe a comma separated ROOM_NAME variable?)
+- Defining the command in the api endpoint. At this point it assumes that the command is /aq and parses accordingly in the Hipchat API. (Never assume)
