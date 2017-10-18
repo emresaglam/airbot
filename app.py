@@ -23,7 +23,7 @@ def get_air_quality(zipcode):
         url = "https://api.breezometer.com/baqi/?lat={}&lon={}&fields=country_aqi,breezometer_description,country_name&key={}".format(lat, lon, token)
         try:
             r = requests.get(url)
-            air_quality["location"] = "{}, {}".format(g.json["city"], g.json["state"])
+            air_quality["location"] = "{}, {}".format(g.json["address"])
             air_quality["raw"] = r.json()
             message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
                                                                     r.json()["breezometer_description"])
