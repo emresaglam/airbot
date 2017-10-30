@@ -70,7 +70,6 @@ def aqi():
     else:
         zipcode = data["item"]["message"]["message"]
         zipcode = zipcode[offset:]
-        print zipcode
 
         message = get_air_quality(zipcode)
         if message["query_status"] == "OK":
