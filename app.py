@@ -17,6 +17,7 @@ def get_air_quality(zipcode):
     token = os.environ["BR_TOKEN"]
     air_quality = {}
     g = geocoder.arcgis(zipcode)
+    print g.status
     if g.status == "OK":
         lat = g.json.get("lat")
         lon = g.json.get("lng")
@@ -51,6 +52,9 @@ def aqi():
     It returns a basic HipChat message with different colors depending on the air quality
     :return: 
     '''
+    botcommand = os.environ["BOT_COMMAND"]
+    # Calculating the offset for the command name in the message
+    offset = len(botcommand)+1
     aqiroom = os.environ["ROOM_NAME"]
     color = "yellow"
     returned = {}
@@ -65,7 +69,8 @@ def aqi():
         color = "red"
     else:
         zipcode = data["item"]["message"]["message"]
-        zipcode = zipcode[4:]
+        zipcode = zipcode[offset:]
+        print zipcode
 
         message = get_air_quality(zipcode)
         if message["query_status"] == "OK":
