@@ -12,6 +12,7 @@ No authentication is required to use this API.
 It's designed to be easily deployed on Heroku. You have to define:
 - an environment variable BR_TOKEN which contains your API token for Breezometer. You can get it from: https://developers.breezometer.com
 - an environment variable ROOM_NAME for a room name for HipChat to be whitelisted. (To be only called from that room name, all other rooms will advertise ROOM_NAME)
+- an environment variable BOT_COMMAND for the command to be invoked to interact with the bot in the channel. (For example: For the command `/aq Istanbul, Turkey` -> `BOT_COMMAND="/aq"`)
 
 # API Endpoints:
 1. `/aqi/`: accepts POST only. Payload should be HipChat format. Returns basic HipChat message format with colors according to aqi severity.
@@ -23,4 +24,4 @@ It's designed to be easily deployed on Heroku. You have to define:
 - There is some error handling at this point. It does not fail very gracefully. 
 - If no ROOM_NAME is defined, should stop whitelisting.
 - Should accept multiple room names (Maybe a comma separated ROOM_NAME variable?)
-- Defining the command in the api endpoint. At this point it assumes that the command is /aq and parses accordingly in the Hipchat API. (Never assume)
+- ~~Defining the command in the api endpoint. At this point it assumes that the command is /aq and parses accordingly in the Hipchat API. (Never assume)~~
