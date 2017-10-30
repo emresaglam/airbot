@@ -19,6 +19,11 @@ It's designed to be easily deployed on Heroku. You have to define:
 2. `/aqi-slack`: accepts POST only. Payload is Slack's slash command format. Returns a simple message. (Can be improved with Slack shenaningans)
 3. `/aqig/<zipcode>`: accepts GET only. Whatever is after the the trailing slash is parsed as the location. Example: /aqig/Istanbul,%20Turkey
 
+# Screenshots
+
+![Hipchat on iOS screenshot](https://i.imgur.com/Mu675gP.jpg "Hipchat on iOS screenshot")
+![Slack on iOS screenshot](https://i.imgur.com/PaXsvYW.jpg "Slack on iOS screenshot")
+
 # Todo
 
 - There is some error handling at this point. It does not fail very gracefully. 
