@@ -22,6 +22,7 @@ It's designed to be easily deployed on Heroku. You have to define:
 # Screenshots
 
 ![Hipchat on iOS screenshot](https://i.imgur.com/Mu675gP.jpg "Hipchat on iOS screenshot")
+---
 ![Slack on iOS screenshot](https://i.imgur.com/PaXsvYW.jpg "Slack on iOS screenshot")
 
 # Todo
