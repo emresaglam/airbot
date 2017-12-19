@@ -136,6 +136,7 @@ def aqig(zipcode):
     returned["message"] = message["message"]
     returned["notify"] = False
     returned["message_format"] = "text"
+    returned["aqi"] = int(aqi)
     returned_json = json.dumps(returned)
     return returned_json
 
