@@ -14,4 +14,4 @@ ratelim==0.1.6
 requests>=2.20.0
 six==1.11.0
 urllib3>=1.23
-werkzeug~>0.15.3
+werkzeug>0.15.3
