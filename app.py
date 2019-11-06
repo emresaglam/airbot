@@ -26,8 +26,11 @@ def get_air_quality(zipcode):
             r = requests.get(url)
             air_quality["location"] = "{}".format(g.json["address"].encode("utf8"))
             air_quality["raw"] = r.json()
-            message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
-                                                                    r.json()["breezometer_description"])
+            try:
+              message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
+                                                                  r.json()["breezometer_description"])
+            except KeyError:
+              message = "Air Quality couldn't be picked. ERROR!"
             air_quality["message"] = message
             air_quality["query_status"] = "OK"
         except requests.exceptions.RequestException as e:
