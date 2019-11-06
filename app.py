@@ -47,57 +47,6 @@ def api_root():
     return "Oh hai! This is an API endpoint and this is not the URL you're looking for :)"
 
 
-@app.route('/aqi/', methods=["POST"])
-def aqi():
-    '''
-    The payload for the POST request must follow the HipChat 
-    room_message webhook format: https://www.hipchat.com/docs/apiv2/webhooks#room_message
-    
-    It returns a basic HipChat message with different colors depending on the air quality
-    :return: 
-    '''
-    botcommand = os.environ["BOT_COMMAND"]
-    # Calculating the offset for the command name in the message
-    offset = len(botcommand)+1
-    aqiroom = os.environ["ROOM_NAME"]
-    color = "yellow"
-    returned = {}
-    message = {}
-    # print "request.form: {}".format(request.data)
-    # For the line below we can always fo json.loads(request.data)
-    # data = json.loads(request.data) Maybe for the future?
-    data = request.get_json(force=True, silent=False)
-    print (data)
-    if data["item"]["room"]["name"] != aqiroom:
-        message["message"] = "This command doesn't work in this room. Please visit '{}'".format(aqiroom)
-        color = "red"
-    else:
-        zipcode = data["item"]["message"]["message"]
-        zipcode = zipcode[offset:]
-
-        message = get_air_quality(zipcode)
-        if message["status"] == "OK":
-            aqi = message["aqi"]
-
-            if aqi < 50:
-                color = "green"
-            elif 50 < aqi < 150:
-                color = "yellow"
-            elif 150 < aqi < 250:
-                color = "red"
-            elif 250 < aqi < 1000:
-                color = "purple"
-        else:
-            message["message"] = "This location is not recognized"
-
-    returned["color"] = color
-    returned["message"] = message["message"]
-    returned["notify"] = False
-    returned["message_format"] = "text"
-    returned_json = json.dumps(returned)
-    return returned_json
-
-
 @app.route("/aqi-slack", methods=['POST'])
 def slackpost():
     '''
