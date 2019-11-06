@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 import geocoder
 import requests
 import json
@@ -6,6 +6,7 @@ import os
 
 app = Flask(__name__)
 
+baseurl = "https://api.ambeedata.com/latest/by-lat-lng"
 
 def get_air_quality(zipcode):
     '''
@@ -14,30 +15,30 @@ def get_air_quality(zipcode):
     :param zipcode: 
     :return: 
     '''
-    token = os.environ["BR_TOKEN"]
+    token = os.environ["AMBEE_TOKEN"]
     air_quality = {}
     g = geocoder.arcgis(zipcode)
-    print g.status
+    print (g.status)
     if g.status == "OK":
         lat = g.json.get("lat")
         lon = g.json.get("lng")
-        url = "https://api.breezometer.com/baqi/?lat={}&lon={}&fields=country_aqi,breezometer_description,country_name&key={}".format(lat, lon, token)
+        url = "{}/?lat={}&lng={}".format(baseurl, lat, lon)
+        headers = {"accept": "application/json", "x-api-key": token}
         try:
-            r = requests.get(url)
-            air_quality["location"] = "{}".format(g.json["address"].encode("utf8"))
-            air_quality["raw"] = r.json()
-            try:
-              message = "Air quality index for {} is: {} - {}".format(air_quality["location"], r.json()["country_aqi"],
-                                                                  r.json()["breezometer_description"])
-            except KeyError:
-              message = "Air Quality couldn't be picked. ERROR!"
-            air_quality["message"] = message
-            air_quality["query_status"] = "OK"
+            r = requests.get(url, headers=headers)
+            if r.json()["message"] != "nearest places":
+                exit(0)
+            else:
+                air_quality["status"] = "OK"
+                air_quality["aqi"] = r.json()["data"][0]["AQI"]
+                air_quality["location"] = r.json()["data"][0]["division"]
+                air_quality["message"] = "Air quality in {} is: {}".format(air_quality["location"], air_quality["aqi"])
         except requests.exceptions.RequestException as e:
+            air_quality["status"] = "ERROR"
             air_quality["message"] = "{}".format(e)
     else:
-        air_quality["query_status"] = "ERROR"
-
+        air_quality["status"] = "ERROR"
+        air_quality["message"] = "Location Unknown!"
     return air_quality
 
 
@@ -66,7 +67,7 @@ def aqi():
     # For the line below we can always fo json.loads(request.data)
     # data = json.loads(request.data) Maybe for the future?
     data = request.get_json(force=True, silent=False)
-    print data
+    print (data)
     if data["item"]["room"]["name"] != aqiroom:
         message["message"] = "This command doesn't work in this room. Please visit '{}'".format(aqiroom)
         color = "red"
@@ -75,15 +76,14 @@ def aqi():
         zipcode = zipcode[offset:]
 
         message = get_air_quality(zipcode)
-        if message["query_status"] == "OK":
-            aqi = message["raw"]["country_aqi"]
+        if message["status"] == "OK":
+            aqi = message["aqi"]
 
             if aqi < 50:
                 color = "green"
             elif 50 < aqi < 150:
                 color = "yellow"
             elif 150 < aqi < 250:
-                color = "red"
                 color = "red"
             elif 250 < aqi < 1000:
                 color = "purple"
@@ -109,8 +109,8 @@ def slackpost():
     zipcode = request.form.get('text', None)
     returned = {}
     message = get_air_quality(zipcode)
-    if message["query_status"] == "OK":
-        aqi = message["raw"]["country_aqi"]
+    if message["status"] == "OK":
+        aqi = message["aqi"]
         color = "green"
     else:
         message["message"] = "This location is not recognized"
@@ -129,12 +129,14 @@ def aqig(zipcode):
     '''
     returned = {}
     message = get_air_quality(zipcode)
-    if message["query_status"] == "OK":
-        aqi = message["raw"]["country_aqi"]
+    if message["status"] == "OK":
+        aqi = message["aqi"]
         color = "green"
     else:
         message["message"] = "This location is not recognized"
         color = "red"
+        print ("Something wrong with the request... aborting")
+        abort(405)
     returned["color"] = color
     returned["message"] = message["message"]
     returned["notify"] = False
