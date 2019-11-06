@@ -3,7 +3,7 @@ Airbot is a small API endpoint (with two endpoints at the time of writing) that 
 
 It's written in few hours work after the Northern California wildfires smoke hit San Francisco and the bay area in October 2017. 
 
-It's designed to answer in the most basic ~~HipChat/~~Slack format so that it can be used as a ~~HipChat/~~Slack endpoint for a bot.
+It's designed to answer in the most basic ~~HipChat/~~ Slack format so that it can be used as a ~~HipChat/~~ Slack endpoint for a bot.
 
 No authentication is required to use this API.
 
@@ -11,7 +11,6 @@ No authentication is required to use this API.
 
 It's designed to be easily deployed on Heroku. You have to define:
 - an environment variable AMBEE_TOKEN which contains your API token for AMBEE. You can get it from: https://getambee.com/section/pricing.html
-~~- an environment variable ROOM_NAME for a room name for HipChat to be whitelisted. (To be only called from that room name, all other rooms will advertise ROOM_NAME)~~
 - an environment variable BOT_COMMAND for the command to be invoked to interact with the bot in the channel. (For example: For the command `/aq Istanbul, Turkey` -> `BOT_COMMAND="/aq"`)
 
 # API Endpoints:
@@ -22,8 +21,8 @@ It's designed to be easily deployed on Heroku. You have to define:
 # Screenshots
 
 ## HipChat
-HipChat is not supported anymore. WomWomp...
 ---
+HipChat is not supported anymore. WomWomp...
 
 ## Slack
 ![Slack on iOS screenshot](https://i.imgur.com/PaXsvYW.jpg "Slack on iOS screenshot")
