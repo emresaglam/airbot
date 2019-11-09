@@ -8,6 +8,13 @@ app = Flask(__name__)
 
 baseurl = "https://api.ambeedata.com/latest/by-lat-lng"
 
+def get_avg_AQI(aqis):
+    sum = 0
+    for data in aqis["data"]:
+        sum = sum + int(data["AQI"])
+    avg = sum/len(aqis["data"])
+    return int(avg)
+
 def get_air_quality(zipcode):
     '''
     Get the location data (as zipcode or free form). Use geocoder to lookup from google
@@ -30,7 +37,7 @@ def get_air_quality(zipcode):
                 exit(0)
             else:
                 air_quality["status"] = "OK"
-                air_quality["aqi"] = r.json()["data"][0]["AQI"]
+                air_quality["aqi"] = get_avg_AQI(r.json())
                 air_quality["location"] = r.json()["data"][0]["division"]
                 air_quality["message"] = "Air quality in {} is: {}".format(air_quality["location"], air_quality["aqi"])
         except requests.exceptions.RequestException as e:
