@@ -110,5 +110,8 @@ if __name__ == '__main__':
         ip = os.environ.get('AIR_IP')
     else:
         ip = "127.0.0.1"
-
-    app.run(host=ip, port=port)
+    if os.environ.get('DEBUG'):
+        debug = True
+    else:
+        debug = False
+    app.run(host=ip, debug=debug, port=port)
