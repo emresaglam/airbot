@@ -102,4 +102,13 @@ def aqig(zipcode):
     return returned_json
 
 if __name__ == '__main__':
-    app.run()
+    if os.environ.get('AIR_PORT'):
+        port = os.environ.get('AIR_PORT')
+    else:
+        port = "5000"
+    if os.environ.get('AIR_IP'):
+        ip = os.environ.get('AIR_IP')
+    else:
+        ip = "127.0.0.1"
+
+    app.run(host=ip, port=port)
