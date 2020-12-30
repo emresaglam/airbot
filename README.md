@@ -10,7 +10,7 @@ No authentication is required to use this API.
 # How?
 
 It's designed to be easily deployed on Heroku. You have to define:
-- an environment variable AMBEE_TOKEN which contains your API token for AMBEE. You can get it from: https://getambee.com/section/pricing.html
+- an environment variable AMBEE_TOKEN which contains your API token for AMBEE. You can get it from: https://api-dashboard.getambee.com/#/signup
 - an environment variable BOT_COMMAND for the command to be invoked to interact with the bot in the channel. (For example: For the command `/aq Istanbul, Turkey` -> `BOT_COMMAND="/aq"`)
 
 # API Endpoints:
