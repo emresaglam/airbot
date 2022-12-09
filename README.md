@@ -1,3 +1,5 @@
+This project is not maintained anymore. Archived as of Dec 8th 2022.
+
 # What is airbot?
 Airbot is a small API endpoint (with two endpoints at the time of writing) that will accept a geolocation and will return the air quality index of that location.
 
